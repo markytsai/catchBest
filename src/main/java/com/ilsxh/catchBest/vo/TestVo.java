@@ -1,15 +1,21 @@
 package com.ilsxh.catchBest.vo;
 
 import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.Length;
+
 import com.ilsxh.catchBest.validator.IsMobile;
 import com.ilsxh.catchBest.validator.IsTestedSuccessful;
 
-public class LoginVo extends BaseVo {
-
-//	@IsTestedSuccessful
+/**
+ * @description
+ * @author Caizhenya mail:tsaizhenya@gmail.com
+ * @date 2018年6月30日 上午9:29:44
+ *
+ */
+public class TestVo extends BaseVo{
 	@NotNull
-	@IsMobile
+	@IsTestedSuccessful
 	private String mobile;
 
 	@NotNull

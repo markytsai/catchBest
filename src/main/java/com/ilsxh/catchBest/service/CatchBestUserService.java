@@ -14,7 +14,9 @@ import com.ilsxh.catchBest.redis.CatchBestUserKey;
 import com.ilsxh.catchBest.result.CodeMsg;
 import com.ilsxh.catchBest.util.MD5Util;
 import com.ilsxh.catchBest.util.UUIDUtil;
+import com.ilsxh.catchBest.vo.BaseVo;
 import com.ilsxh.catchBest.vo.LoginVo;
+import com.ilsxh.catchBest.vo.TestVo;
 
 @Service
 public class CatchBestUserService {
@@ -50,6 +52,7 @@ public class CatchBestUserService {
 
 		// 获取前台传来的手机号和密码
 		String mobile = loginVo.getMobile();
+		System.out.println(mobile);
 		String formPass = loginVo.getPassword();
 		// 判断手机号是否存在
 		CatchBestUser user = getById(Long.parseLong(mobile));
@@ -70,6 +73,12 @@ public class CatchBestUserService {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @param response
+	 * @param token 随机生成的ID
+	 * @param user
+	 */
 	private void addCookie(HttpServletResponse response, String token, CatchBestUser user) {
 		redisService.set(CatchBestUserKey.token, token, user);
 		Cookie cookie = new Cookie(COOKI_NAME_TOKEN, token);

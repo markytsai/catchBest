@@ -5,7 +5,7 @@ package com.ilsxh.catchBest.domain;
 * @date   2018年6月28日 下午1:33:41
 *
 */
-public class Goods2 {
+public class Goods {
 	private Long id;
 	private String goodsName;
 	private String goodsTitle;

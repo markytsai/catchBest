@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ilsxh.catchBest.result.Result;
 import com.ilsxh.catchBest.service.CatchBestUserService;
 import com.ilsxh.catchBest.service.RedisService;
+import com.ilsxh.catchBest.vo.BaseVo;
 import com.ilsxh.catchBest.vo.LoginVo;
+import com.ilsxh.catchBest.vo.TestVo;
 
 
 @Controller
@@ -41,4 +43,5 @@ public class LoginController {
     	userService.login(response, loginVo);
     	return Result.success(true);
     }
+    
 }
