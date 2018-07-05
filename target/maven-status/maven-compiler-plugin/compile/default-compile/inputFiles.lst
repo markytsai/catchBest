@@ -33,6 +33,7 @@ E:\JavaWebProjects\catchBest\src\main\java\com\ilsxh\catchBest\result\Result.jav
 E:\JavaWebProjects\catchBest\src\main\java\com\ilsxh\catchBest\service\OrderService.java
 E:\JavaWebProjects\catchBest\src\main\java\com\ilsxh\catchBest\service\RedisService.java
 E:\JavaWebProjects\catchBest\src\main\java\com\ilsxh\catchBest\redis\RedisConfig.java
+E:\JavaWebProjects\catchBest\src\main\java\com\ilsxh\catchBest\redis\GoodsKey.java
 E:\JavaWebProjects\catchBest\src\main\java\com\ilsxh\catchBest\util\MD5Util.java
 E:\JavaWebProjects\catchBest\src\main\java\com\ilsxh\catchBest\redis\CatchBestUserKey.java
 E:\JavaWebProjects\catchBest\src\main\java\com\ilsxh\catchBest\domain\OrderInfo.java

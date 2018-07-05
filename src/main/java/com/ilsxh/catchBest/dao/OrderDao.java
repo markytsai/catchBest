@@ -10,10 +10,11 @@ import com.ilsxh.catchBest.domain.CatchBestOrder;
 import com.ilsxh.catchBest.domain.OrderInfo;
 
 @Mapper
-public interface OrderDao {	
+public interface OrderDao {
 
 	@Select("select * from catchbest_order where user_id=#{userId} and goods_id=#{goodsId}")
-	public CatchBestOrder getCatchbestOrderByUserIdGoodsId(@Param("userId") long userId, @Param("goodsId") long goodsId);
+	public CatchBestOrder getCatchbestOrderByUserIdGoodsId(@Param("userId") long userId,
+			@Param("goodsId") long goodsId);
 
 	@Insert("insert into order_info(user_id, goods_id, goods_name, goods_count, goods_price, order_channel, status, create_date)values("
 			+ "#{userId}, #{goodsId}, #{goodsName}, #{goodsCount}, #{goodsPrice}, #{orderChannel},#{status},#{createDate} )")
@@ -22,5 +23,8 @@ public interface OrderDao {
 
 	@Insert("insert into catchbest_order (user_id, goods_id, order_id)values(#{userId}, #{goodsId}, #{orderId})")
 	public int insertCatchbestOrder(CatchBestOrder catchbestOrder);
+
+	@Select("select * from order_info where id = #{orderId}")
+	public OrderInfo getOrderById(@Param("orderId")long orderId);
 
 }

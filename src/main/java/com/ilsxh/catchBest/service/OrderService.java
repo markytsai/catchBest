@@ -10,6 +10,7 @@ import com.ilsxh.catchBest.dao.OrderDao;
 import com.ilsxh.catchBest.domain.CatchBestOrder;
 import com.ilsxh.catchBest.domain.CatchBestUser;
 import com.ilsxh.catchBest.domain.OrderInfo;
+import com.ilsxh.catchBest.redis.OrderKey;
 import com.ilsxh.catchBest.vo.GoodsVo;
 
 @Service
@@ -17,9 +18,13 @@ public class OrderService {
 
 	@Autowired
 	OrderDao orderDao;
+	
+	@Autowired
+	RedisService redisService;	
 
 	public CatchBestOrder getMiaoshaOrderByUserIdGoodsId(long userId, long goodsId) {
-		return orderDao.getCatchbestOrderByUserIdGoodsId(userId, goodsId);
+//		return orderDao.getCatchbestOrderByUserIdGoodsId(userId, goodsId);
+		return redisService.get(OrderKey.getMiaoshaOrderByUidGid, ""+userId+"_"+goodsId, CatchBestOrder.class);
 	}
 
 	@Transactional
@@ -44,7 +49,16 @@ public class OrderService {
 		catchbestOrder.setOrderId(orderId); 		//	订单ID
 		catchbestOrder.setUserId(user.getId());   // 用户ID
 		orderDao.insertCatchbestOrder(catchbestOrder);
+		
+		redisService.set(OrderKey.getMiaoshaOrderByUidGid, ""+user.getId()+"_"+goods.getId(), catchbestOrder);
+		
 		return orderInfo;
+	}
+
+	public OrderInfo getOrderById(long orderId) {
+		
+		return orderDao.getOrderById(orderId);
+		
 	}
 
 }

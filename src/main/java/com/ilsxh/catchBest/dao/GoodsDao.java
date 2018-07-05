@@ -23,7 +23,7 @@ public interface GoodsDao {
 	@Select("select g.*, cg.sale_price, cg.stock_count, cg.start_date, cg.end_date from catchbest_goods cg left join goods g on cg.goods_id = g.id where goods_id=#{goodsId}")
 	public GoodsVo getGoodsVoByGoodsId(long goodsId);
 
-	@Update("update catchbest_goods set stock_count = stock_count - 1 where goods_id = #{goodsId}")
+	@Update("update catchbest_goods set stock_count = stock_count - 1 where goods_id = #{goodsId} and stock_count > 0")
 	public void reduceStock(CatchBestGoods g);
 
 }

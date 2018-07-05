@@ -42,12 +42,16 @@ public class RedisService {
 		}
 		try {
 			jedis = jedisPool.getResource();
+
+			// 转换成JSON字符串格式
 			String str = beanToString(value);
+
 			if (str == null || str.length() <= 0) {
 				return false;
 			}
 			// 生成真正的key
 			String realKey = prefix.getPrefix() + key;
+
 			int seconds = prefix.expireSeconds();
 			if (seconds <= 0) {
 				jedis.set(realKey, str);
@@ -70,6 +74,26 @@ public class RedisService {
 			// 生成真正的key
 			String realKey = prefix.getPrefix() + key;
 			return jedis.exists(realKey);
+		} finally {
+			returnToPool(jedis);
+		}
+	}
+
+	/**
+	 * 删除
+	 * 
+	 * @param prefix
+	 * @param key
+	 * @return
+	 */
+	public boolean delete(KeyPrefix prefix, String key) {
+		Jedis jedis = null;
+		try {
+			jedis = jedisPool.getResource();
+			// 生成真正的key
+			String realKey = prefix.getPrefix() + key;
+			long ret = jedis.del(realKey);
+			return ret > 0;
 		} finally {
 			returnToPool(jedis);
 		}
@@ -117,7 +141,7 @@ public class RedisService {
 		} else if (clazz == long.class || clazz == Long.class) {
 			return "" + value;
 		} else {
-			System.out.println(JSON.toJSONString(value));
+//			System.out.println(JSON.toJSONString(value));
 			return JSON.toJSONString(value);
 		}
 	}

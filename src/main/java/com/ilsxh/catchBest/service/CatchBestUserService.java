@@ -30,7 +30,35 @@ public class CatchBestUserService {
 	RedisService redisService;
 
 	public CatchBestUser getById(long id) {
-		return catchBestUserDao.getById(id);
+		// 取缓存
+		CatchBestUser user = redisService.get(CatchBestUserKey.getById, "" + id, CatchBestUser.class);
+		if (user != null) {
+			return user;
+		}
+		// 取数据库
+		user = catchBestUserDao.getById(id);
+		if (user != null) {
+			redisService.set(CatchBestUserKey.getById, "" + id, user);
+		}
+		return user;
+	}
+
+	public boolean updatePassword(String token, long id, String formPass) {
+		// 取user
+		CatchBestUser user = getById(id);
+		if (user == null) {
+			throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
+		}
+		// 更新数据库
+		CatchBestUser toBeUpdate = new CatchBestUser();
+		toBeUpdate.setId(id);
+		toBeUpdate.setPassword(MD5Util.formPassToDBPass(formPass, user.getSalt()));
+		catchBestUserDao.update(toBeUpdate);
+		// 处理缓存
+		redisService.delete(CatchBestUserKey.getById, "" + id);
+		user.setPassword(toBeUpdate.getPassword());
+		redisService.set(CatchBestUserKey.token, token, user);
+		return true;
 	}
 
 	public CatchBestUser getByToken(HttpServletResponse response, String token) {
@@ -52,14 +80,12 @@ public class CatchBestUserService {
 
 		// 获取前台传来的手机号和密码
 		String mobile = loginVo.getMobile();
-		System.out.println(mobile);
 		String formPass = loginVo.getPassword();
 		// 判断手机号是否存在
 		CatchBestUser user = getById(Long.parseLong(mobile));
 		if (user == null) {
 			throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
 		}
-		System.out.println(user);
 		// 验证密码
 		String dbPass = user.getPassword();
 		String saltDB = user.getSalt();
@@ -76,7 +102,8 @@ public class CatchBestUserService {
 	/**
 	 * 
 	 * @param response
-	 * @param token 随机生成的ID
+	 * @param token
+	 *            随机生成的ID
 	 * @param user
 	 */
 	private void addCookie(HttpServletResponse response, String token, CatchBestUser user) {

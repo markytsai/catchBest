@@ -17,7 +17,13 @@ public class IsMobileSuccessValidator implements ConstraintValidator<IsMobile, S
 			return true;
 		}
 		return false;
-		
+
+	}
+
+	@Override
+	public void initialize(IsMobile arg0) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

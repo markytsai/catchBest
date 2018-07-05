@@ -17,13 +17,13 @@ import javax.validation.Payload;
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
 @Retention(RUNTIME)
 @Documented
-@Constraint(validatedBy = { IsMobileValidator.class })
+@Constraint(validatedBy = { IsMobileValidator.class }) // 由这个类来判断
 public @interface IsMobile {
 
 	// 默认不为空
 	boolean required() default true;
 
-	// 一下三个是必须的	 
+	// 以下三个是必须的	 
 	String message() default "手机号码格式错误";
 
 	Class<?>[] groups() default {};

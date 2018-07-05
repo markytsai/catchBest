@@ -30,6 +30,7 @@ com\ilsxh\catchBest\domain\OrderInfo.class
 com\ilsxh\catchBest\exception\GlobalException.class
 com\ilsxh\catchBest\domain\CatchBestOrder.class
 com\ilsxh\catchBest\redis\BasePrefix.class
+com\ilsxh\catchBest\redis\GoodsKey.class
 com\ilsxh\catchBest\service\GoodsService.class
 com\ilsxh\catchBest\result\CodeMsg.class
 com\ilsxh\catchBest\vo\TestVo.class
