@@ -18,18 +18,18 @@ public class OrderService {
 
 	@Autowired
 	OrderDao orderDao;
-	
-	@Autowired
-	RedisService redisService;	
 
-	public CatchBestOrder getMiaoshaOrderByUserIdGoodsId(long userId, long goodsId) {
-//		return orderDao.getCatchbestOrderByUserIdGoodsId(userId, goodsId);
-		return redisService.get(OrderKey.getMiaoshaOrderByUidGid, ""+userId+"_"+goodsId, CatchBestOrder.class);
+	@Autowired
+	RedisService redisService;
+
+	public CatchBestOrder getCatchBestOrderByUserIdGoodsId(long userId, long goodsId) {
+		// return orderDao.getCatchbestOrderByUserIdGoodsId(userId, goodsId);
+		return redisService.get(OrderKey.getCatchBestOrderByUidGid, "" + userId + "_" + goodsId, CatchBestOrder.class);
 	}
 
 	@Transactional
 	public OrderInfo createOrder(CatchBestUser user, GoodsVo goods) {
-		
+
 		// 创建订单
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setCreateDate(new Date());
@@ -42,23 +42,27 @@ public class OrderService {
 		orderInfo.setStatus(0);
 		orderInfo.setUserId(user.getId());
 		long orderId = orderDao.insert(orderInfo);
-		
+
 		// 创建秒杀订单
 		CatchBestOrder catchbestOrder = new CatchBestOrder();
 		catchbestOrder.setGoodsId(goods.getId()); // 商品ID
-		catchbestOrder.setOrderId(orderId); 		//	订单ID
-		catchbestOrder.setUserId(user.getId());   // 用户ID
+		catchbestOrder.setOrderId(orderId); // 订单ID
+		catchbestOrder.setUserId(user.getId()); // 用户ID
 		orderDao.insertCatchbestOrder(catchbestOrder);
-		
-		redisService.set(OrderKey.getMiaoshaOrderByUidGid, ""+user.getId()+"_"+goods.getId(), catchbestOrder);
-		
+
+		redisService.set(OrderKey.getCatchBestOrderByUidGid, "" + user.getId() + "_" + goods.getId(), catchbestOrder);
+
 		return orderInfo;
 	}
 
 	public OrderInfo getOrderById(long orderId) {
-		
+
 		return orderDao.getOrderById(orderId);
-		
+
 	}
 
+	public void deleteOrders() {
+		orderDao.deleteOrders();
+		orderDao.deleteCatchBestOrders();
+	}
 }

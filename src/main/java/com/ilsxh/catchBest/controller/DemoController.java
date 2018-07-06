@@ -1,5 +1,7 @@
 package com.ilsxh.catchBest.controller;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ilsxh.catchBest.domain.User;
+import com.ilsxh.catchBest.rabbitmq.MQSender;
 import com.ilsxh.catchBest.redis.UserKey;
 import com.ilsxh.catchBest.result.CodeMsg;
 import com.ilsxh.catchBest.result.Result;
@@ -19,14 +22,27 @@ import com.ilsxh.catchBest.service.UserService;
  * @date 2018年6月26日 下午5:08:32
  *
  */
+@RequestMapping("/demo")
 @Controller
 public class DemoController {
 
 	@Autowired
 	UserService userService;
+	
+	Locale s;
 
 	@Autowired
 	RedisService redisService;
+
+	@Autowired
+	MQSender mqSender;
+
+	@RequestMapping("/mq")
+	@ResponseBody
+	public Result<String> mq() {
+		mqSender.sendMessage("hello mq");
+		return Result.success("hello mq");
+	}
 
 	@RequestMapping("/")
 	public String index() {

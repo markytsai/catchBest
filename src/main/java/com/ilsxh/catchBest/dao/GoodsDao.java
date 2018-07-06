@@ -24,6 +24,9 @@ public interface GoodsDao {
 	public GoodsVo getGoodsVoByGoodsId(long goodsId);
 
 	@Update("update catchbest_goods set stock_count = stock_count - 1 where goods_id = #{goodsId} and stock_count > 0")
-	public void reduceStock(CatchBestGoods g);
+	public int reduceStock(CatchBestGoods g);
+
+	@Update("update catchbest_goods set stock_count = #{stockCount} where goods_id = #{goodsId}")
+	public int resetStock(CatchBestGoods g);
 
 }
